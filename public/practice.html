@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Practice Questions</title>
+  <style>
+    body {
+      background-image: url('a.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      height: 100vh;
+      margin: 65px;
+      font-family: 'Roboto', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      color: #fff;
+    }
+
+    h2 {
+      font-size: 30px;
+    }
+
+    label {
+      display: flex;
+      align-items: center;
+      color: white;
+      padding: 5px;
+      font-size: 20px;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #A6062F;
+      color: white;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    button:first-child {
+      margin-right: 20px;
+    }
+
+  </style>
+</head>
+<body>
+  <h2 id="question">Question 1:</h2>
+
+  <form id="answerForm">
+    <button onclick="nextQuestion()">Next Question</button>
+  </form>
+
+  <div id="score"></div>
+  <div id="incorrectQuestions"></div>
+  <div id="buttons"></div>
+
+  <script>
+    const questions = [
+      {
+        question: 'Solve for x: 4x + 6 = 3',
+        options: ['-0.75', '2', '-1.75', '6'],
+        correctAnswer: '-0.75'
+      },
+      {
+        question: 'Solve for x: 2x - 8 = 8',
+        options: ['4.5', '7', '8', '1.75'],
+        correctAnswer: '8'
+      },
+      {
+        question: 'Solve for x: 7x + 2 = 9x',
+        options: ['5', '5.5', '4', '1'],
+        correctAnswer: '1'
+      },
+      {
+        question: 'Solve for x and y: x + 6y = 5x',
+        options: ['x = 1, y = 2', 'x = 0.66, y = 1', 'x = 3, y = 3.5', 'x = 1, y = 0.75'],
+        correctAnswer: 'x = 0.66, y = 1'
+      },
+      // Add more questions as needed
+    ];
+
+    let currentQuestionIndex = 0;
+    let correctAnswers = 0;
+    let incorrectQuestions = [];
+
+    function displayQuestion() {
+      const currentQuestion = questions[currentQuestionIndex];
+      document.getElementById('question').innerText = `Question ${currentQuestionIndex + 1}: ${currentQuestion.question}`;
+
+      const optionsHTML = currentQuestion.options.map((option, index) => {
+        return `<label>
+                  <input type="radio" name="answer" value="${option}"> ${option}
+                </label><br>`;
+      }).join('');
+
+      document.getElementById('answerForm').innerHTML = optionsHTML + '<button onclick="nextQuestion()">Next Question</button>';
+    }
+
+    function nextQuestion() {
+      const selectedAnswer = document.querySelector('input[name="answer"]:checked');
+
+      if (selectedAnswer) {
+        const userAnswer = selectedAnswer.value;
+        const currentQuestion = questions[currentQuestionIndex];
+
+        if (userAnswer === currentQuestion.correctAnswer) {
+          correctAnswers++;
+        } else {
+          incorrectQuestions.push({
+            question: currentQuestion.question,
+            userAnswer: userAnswer,
+            correctAnswer: currentQuestion.correctAnswer,
+            explanation: 'Given equation: 4x + 6 = 3 First, subtract 6 from both sides to isolate the term with x: 4x = -3. Second, divide both sides by 4 to solve for x: x = -3/4. Therefore, the correct solution to the equation 4x + 6 = 3 is x = -3/4.'
+          });
+        }
+
+        currentQuestionIndex++;
+
+        if (currentQuestionIndex < questions.length) {
+          displayQuestion();
+        } else {
+          displayScore();
+          displayIncorrectQuestions();
+          displayButtons();
+        }
+      } else {
+        alert('Please select an answer before proceeding to the next question.');
+      }
+    }
+
+    function displayScore() {
+      document.getElementById('question').innerText = 'Final Outcome';
+      document.getElementById('score').innerText = `Your score: ${correctAnswers} out of ${questions.length}`;
+      document.getElementById('answerForm').innerHTML = '';
+    }
+
+    function displayIncorrectQuestions() {
+      const incorrectQuestionsDiv = document.getElementById('incorrectQuestions');
+      if (incorrectQuestions.length > 0) {
+        let html = '<h3>Incorrectly Answered Questions:</h3>';
+        incorrectQuestions.forEach((incorrect) => {
+          html += `<p>
+                    <strong>Question:</strong> ${incorrect.question}<br>
+                    <strong>Your Answer:</strong> ${incorrect.userAnswer}<br>
+                    <strong>Correct Answer:</strong> ${incorrect.correctAnswer}<br>
+                    <strong>Explanation:</strong> ${incorrect.explanation}<br>
+                  </p>`;
+        });
+        incorrectQuestionsDiv.innerHTML = html;
+      } else {
+        incorrectQuestionsDiv.innerHTML = '<p>No questions were answered incorrectly.</p>';
+      }
+    }
+
+    function displayButtons() {
+      const buttonsDiv = document.getElementById('buttons');
+      buttonsDiv.innerHTML = '<button onclick="tryAgain()">Try again</button><button onclick="goHome()">Go Home</button>';
+    }
+
+    function tryAgain() {
+      currentQuestionIndex = 0;
+      correctAnswers = 0;
+      incorrectQuestions = [];
+      displayQuestion();
+      document.getElementById('score').innerText = '';
+      document.getElementById('incorrectQuestions').innerText = '';
+      document.getElementById('buttons').innerText = '';
+    }
+
+    function goHome() {
+      window.location.href = 'index.html';
+    }
+
+    displayQuestion();
+  </script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mistake Analysis - Question</title>
+  <style>
+      body {
+      background-image: url('a.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      height: 100vh;
+      margin: 65px;
+      font-family: 'Roboto', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      color: #fff;
+    }
+
+    h2 {
+      margin-bottom: 60px;
+    }
+
+    input {
+      margin-top: 5px;
+      margin-bottom: 30px;
+      background-color: #FFF2E9;
+      color: black;
+      padding: 15px;
+      border: none;
+      border-radius: 10px;
+      width: 80%;
+      box-sizing: border-box;
+      font-size: 16px;
+    }
+
+    label {
+      margin-top: 40px;
+      padding: 15px;
+      border: none;
+      border-radius: 10px;
+      width: 80%;
+      box-sizing: border-box;
+      font-size: 16px;
+    }
+
+    .submitButton {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #A6062F;
+      color: white;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      border-radius: 10px;
+      font-size: 16px;
+      width: 12.5%;
+      text-align: center;
+    }
+
+    .practiceButton {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #CD781B;
+      color: white;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      border-radius: 10px;
+      font-size: 16px;
+      width: 12.5%;
+      text-align: center;
+    }
+
+  </style>
+</head>
+<body>
+  <h2>Question: 2x + 3 = 7. What is the value of x?</h2>
+  <form id="answerForm">
+    <label for="answer1">Identify the Variables: </label>
+    <input type="text" id="answer1" name="answer1" required>
+    <span id="feedback1"></span><br>
+
+    <label for="answer2">Your Thought Process: </label>
+    <input type="text" id="answer2" name="answer2" required>
+    <span id="feedback2"></span><br>
+    <div id="explanation" style="display: none;">
+      <p>When solving the equation 2x + 3 = 7:</p>
+      <p>1. Subtract 3 from both sides to isolate the term with x: 2x = 4</p>
+      <p>2. Divide both sides by 2 to solve for x: x = 2</p>
+    </div><br>
+
+    <label for="answer3">Your Answer:</label>
+    <input type="text" id="answer3" name="answer3" required>
+    <span id="feedback3"></span><br>
+
+
+    <div class="submitButton" onclick="checkAnswers()">Submit</div>
+  </form>
+
+  <div id="overallFeedback"></div>
+
+<script>
+  function checkAnswers() {
+    const answer1 = document.getElementById('answer1').value.toLowerCase();
+    const answer2 = document.getElementById('answer2').value.toLowerCase();
+    const answer3 = document.getElementById('answer3').value.toLowerCase();
+
+    const feedback1 = answer1.includes('x') ? 'Correct!' : 'Not quite!';
+    const feedback2 = answer2.includes('x') ? 'Correct!' : 'Not quite!';
+    const feedback3 = answer3.includes('x=2') ? 'Correct!' : 'Not quite!';
+
+    document.getElementById('feedback1').innerText = feedback1;
+    document.getElementById('feedback2').innerText = feedback2;
+    document.getElementById('feedback3').innerText = feedback3;
+
+    if (feedback1 === 'Not quite!') {
+      createPracticeButton('feedback1');
+    }
+
+    if (feedback2 === 'Not quite!') {
+      document.getElementById('explanation').style.display = 'block';
+      createPracticeButton('feedback2');
+    }
+
+    if (feedback3 === 'Not quite!') {
+      createPracticeButton('feedback3');
+    }
+  }
+
+  function createPracticeButton(feedbackId) {
+    const button = document.createElement('div');
+    button.className = 'practiceButton';
+    button.innerText = 'Practice';
+    button.onclick = function () {
+      window.location.href = 'practice.html';
+    };
+
+    const feedbackSpan = document.getElementById(feedbackId);
+    feedbackSpan.appendChild(button);
+  }
+</script>
+</body>
+</html>
